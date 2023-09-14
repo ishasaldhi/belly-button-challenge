@@ -93,9 +93,9 @@ function metadataDisplay(id, data){
     metadata.html("");
 
     Object.entries(mdata[0]).forEach(([key, value]) => {
-        const element = document.createElement('div'); // Create a new element (e.g., <div>)
-        element.textContent = `${key}: ${value}`; // Set the text content
-        metadata.node().appendChild(element); // Append the new element to 'metadata'
+        const element = document.createElement('div'); // Create a new element to update HTML
+        element.textContent = `${key}: ${value}`; 
+        metadata.node().appendChild(element); 
     });
 
     demoinfo.exit().remove()
