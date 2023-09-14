@@ -80,32 +80,26 @@ function bchart(id, data) {
         },
         title: 'Bubble Chart with Markers'
     }
-    Plotly.newPlot("bubble", bdata);
+    Plotly.newPlot("bubble", bdata, layout);
 }
 
 
 function metadataDisplay(id, data){
-    var metadata = d3.select("#sample-metadata")//.selectAll('h3')
-
+    var metadata = d3.select("#sample-metadata")//.selectAll('h6')
     var mdata = data.metadata.filter(index => index.id == id);
+    var demoinfo = metadata.selectAll('h6').data(Object.entries(mdata[0]));
+    
+    //Clear previous entries to every time it's updated it doesn't keep previous elements
+    metadata.html("");
 
-    var demoinfo = metadata.selectAll('h3').data(d3.entries(mdata));
-     
-    demoinfo.enter()
-        .append('h3')
-        //.merge(sampleMetadata)
-        .text(x => `${x.key}:${x.value}`)
-        
+    Object.entries(mdata[0]).forEach(([key, value]) => {
+        const element = document.createElement('div'); // Create a new element (e.g., <div>)
+        element.textContent = `${key}: ${value}`; // Set the text content
+        metadata.node().appendChild(element); // Append the new element to 'metadata'
+    });
+
     demoinfo.exit().remove()
 
-    var ids = mdata[0].id;
-    var ethnicity = mdata[0].ethnicity;
-    var gender = mdata[0].gender;
-    var age = mdata[0].age;
-    var location = mdata[0].location;
-    var bbtype = mdata[0].bbtype;
-    var wfreq = mdata[0].wfreq;
-    console.log(ids, bbtype);
 }
 
 d3.select("#selDataset").on("change", optionChanged);
@@ -116,6 +110,8 @@ function optionChanged() {
     //console.log(id);
     hbar(id, dataSet);
     bchart(id, dataSet);
+    metadataDisplay(id, dataSet)
+    
 }
 
 init();
